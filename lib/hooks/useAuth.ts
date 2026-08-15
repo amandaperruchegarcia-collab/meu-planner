@@ -31,9 +31,35 @@ export function useAuth() {
     return { error };
   }
 
+  async function signUpWithPassword(email: string, password: string) {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+    return { error };
+  }
+
+  async function signInWithPassword(email: string, password: string) {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    return { error };
+  }
+
   async function signOut() {
     await supabase.auth.signOut();
   }
 
-  return { user, loading, signInWithMagicLink, signOut };
+  return {
+    user,
+    loading,
+    signInWithMagicLink,
+    signUpWithPassword,
+    signInWithPassword,
+    signOut
+  };
 }
